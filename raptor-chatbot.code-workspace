@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "raptor",
+			"path": "."
+		},
+		{
+			"name": "raptor-chatbot",
+			"path": "raptor-chatbot"
+		},
+		{
+			"name": "raptor-chatbot-llm",
+			"path": "raptor-chatbot-llm"
+		},
+		{
+			"path": "raptor-chatbot-web"
+		}
+	],
+	"settings": {}
+}

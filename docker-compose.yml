@@ -1,0 +1,56 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
+  llm:
+    build: ./raptor-chatbot-llm
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_URL=http://ollama:11434/api/generate
+      - CORS_ORIGIN=http://localhost
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  auth-server:
+    build: ./raptor-chatbot-server
+    ports:
+      - "3001:3001"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGIN=http://localhost
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
+    restart: unless-stopped
+
+  web:
+    build: ./raptor-chatbot-web
+    ports:
+      - "80:80"
+    depends_on:
+      - llm
+      - auth-server
+    restart: unless-stopped
+
+  bot:
+    build: ./raptor-chatbot
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_ID=${APP_ID}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - PORT=3000
+      - LLM_URL=http://llm:8000
+    depends_on:
+      - llm
+    restart: unless-stopped
+
+volumes:
+  ollama_models:
