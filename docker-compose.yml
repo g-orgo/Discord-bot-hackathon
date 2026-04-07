@@ -46,6 +46,9 @@ services:
       - CORS_ORIGIN=http://localhost
       - ADMIN_EMAIL=${ADMIN_EMAIL:-}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
+      - MONGOMS_DOWNLOAD_DIR=/app/.mongodb-binaries
+    volumes:
+      - auth_data:/app/data
     restart: unless-stopped
 
   web:
@@ -84,3 +87,4 @@ services:
 
 volumes:
   ollama_models:
+  auth_data:
