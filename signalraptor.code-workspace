@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "signalraptor-web"
+		},
+		{
+			"path": "raptor-services"
+		},
+		{
+			"path": "signalraptor-server"
+		}
+	],
+	"settings": {}
+}
