@@ -52,5 +52,16 @@ services:
       - llm
     restart: unless-stopped
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    command: http bot:3000
+    ports:
+      - "4040:4040"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    depends_on:
+      - bot
+    restart: unless-stopped
+
 volumes:
   ollama_models:
