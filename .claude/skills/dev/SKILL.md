@@ -1,7 +1,6 @@
 ---
 name: dev
 description: "Use when: implementing features, adding commands, modifying bot logic, editing any source file, integrating new functionality, fixing bugs, or making any code change in raptor-chatbot. Always load this skill before writing or modifying code in this project."
-applyTo: "**"
 ---
 
 # Dev workflow - Implement/integrate functionalities

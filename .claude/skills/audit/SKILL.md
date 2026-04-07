@@ -1,3 +1,8 @@
+---
+name: audit
+description: "Use when: reviewing code quality, consistency, and adherence to conventions across all stacks in the raptor mono-repo. Always load this skill before performing an audit."
+---
+
 # Audit workflow — Ensure code quality and consistency
 
 Validate code quality and consistency across all four active stacks of the raptor mono-repo: **`raptor-chatbot`**, **`raptor-chatbot-llm`**, **`raptor-chatbot-server`**, and **`raptor-chatbot-web`**. Do not audit other folders (`raptor-services/`, `signalraptor-*`) unless explicitly asked.
@@ -63,6 +68,7 @@ Review all stacks for adherence to their conventions and patterns. Key areas per
 - Ensure environment variables are documented and used via env, not hardcoded.
 - Check integration points: frontend proxy → LLM server → Ollama; frontend → auth server.
 - Everything should be in English for consistency — change all messages, logs, and comments to English.
+- All root folder project `README.md` files should be updated too.
 
 Identify inconsistencies, potential bugs, or areas for improvement. Update relevant files where issues are found. Suggestions should not be left as comments — apply them directly to the code and count this as part of the audit. Also, for auditions only the agent should do changes without asking.
 
@@ -79,9 +85,15 @@ Create a report in `.claude/audits/` (use the most relevant project folder, or `
 
 Save a non-technical summary to `e:/raptor/.claude/stakeholder-summary.md`.
 
-Write a non-technical summary of findings for stakeholders. Keep it concise, friendly, and engaging — use emojis, avoid jargon, and focus on impact. it should include all projects in the mono-repo, not just the audited one. The tone should be positive and forward-looking, emphasizing continuous improvement.
+Write a non-technical summary of findings for stakeholders. Keep it concise, friendly, and engaging — use emojis, avoid jargon, and focus on impact. it should include all projects in the mono-repo, not just the audited one (not even just the changes it recently did, it should be about all projects history).
 
-## 6. Commit and push changes
+## 6. Create summary for the developers learning from the whole project.
+
+Save a very technical summary to `e:/raptor/.claude/developer-summary.md`.
+
+Write a very technical summary of findings for developers. Keep it concise, friendly, and engaging — use emojis, avoid jargon, and focus on impact. it should include all projects in the mono-repo, not just the audited one (not even just the changes it recently did, it should be about all projects history).
+
+## 7. Commit and push changes
 
 Commit all changes with a clear message summarizing the audit and any fixes applied, then push to the remote repository.
 
