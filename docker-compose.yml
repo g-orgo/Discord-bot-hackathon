@@ -47,6 +47,7 @@ services:
       - ADMIN_EMAIL=${ADMIN_EMAIL:-}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
       - MONGOMS_DOWNLOAD_DIR=/app/.mongodb-binaries
+      - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET:-raptor-bot-secret-change-in-prod}
     volumes:
       - auth_data:/app/data
     restart: unless-stopped
@@ -70,8 +71,11 @@ services:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
       - PORT=3000
       - LLM_URL=http://llm:8000
+      - AUTH_URL=http://auth-server:3001
+      - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET:-raptor-bot-secret-change-in-prod}
     depends_on:
       - llm
+      - auth-server
     restart: unless-stopped
 
   ngrok:
