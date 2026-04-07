@@ -87,13 +87,48 @@ Save a non-technical summary to `e:/raptor/.claude/stakeholder-summary.md`.
 
 Write a non-technical summary of findings for stakeholders. Keep it concise, friendly, and engaging — use emojis, avoid jargon, and focus on impact. it should include all projects in the mono-repo, not just the audited one (not even just the changes it recently did, it should be about all projects history).
 
-## 6. Create summary for the developers learning from the whole project.
+## 6. Create algorithm & architecture summary for developers
 
-Save a very technical summary to `e:/raptor/.claude/developer-summary.md`.
+Save a technical deep-dive to `e:/raptor/.claude/developer-summary.md`.
 
-Write a very technical summary of findings for developers. Keep it concise, friendly, and engaging — use emojis, avoid jargon, and focus on impact. it should include all projects in the mono-repo, not just the audited one (not even just the changes it recently did, it should be about all projects history).
+This document should explain **how the system actually works** — not about issues or changes, but about understanding the codebase:
 
-## 7. Commit and push changes
+- **Data Flows:** Trace a real example (e.g. how a message moves from Discord `/ask` → LLM server → response → history storage; or web chat → LLM → history)
+- **Algorithm Explanations:** Document key algorithms (e.g. message translation detection, streaming response parsing)
+- **Component Relationships:** Show which services talk to which, what data is exchanged, retry/error handling patterns
+- **State Management:** How session state and history is managed across the stack
+- **Key Design Patterns:** Async/await patterns, fire-and-forget for background tasks, SSE streaming, in-memory state vs persistence
+- **Strengths:** Highlight what the codebase does well (consistent ESM, async patterns, security practices, etc.)
+
+Structure it as a **learning guide** for developers who just joined the team. Include concrete code snippets and flow diagrams (ASCII art is fine). Focus on understanding, not critique.
+
+**IMPORTANT — this document must NOT contain:**
+- Lists of issues found or bugs fixed
+- Improvement ideas, recommendations, or "areas for improvement"
+- Any "before/after" code comparisons from audit fixes
+- Suggestions for future work
+
+Those belong exclusively in `improvements-summary.md` (step 7).
+
+## 7. Create improvements summary
+
+Save actionable improvements to `e:/raptor/.claude/improvements-summary.md`.
+
+This is a **technical wishlist** from the audit findings, organized by:
+
+- **Quick Wins** (can be done in 1-2 hours): Specific code improvements, missing error handling, config optimizations
+- **Medium Term** (1-2 days): Structural improvements, testing setup, observability
+- **Future Enhancements** (roadmap): New features or architectural changes worth considering
+
+Each item should have:
+- What it is
+- Why it matters (impact on performance/DX/security)
+- Rough effort estimate
+- Code snippet or concrete suggestion
+
+Keep tone friendly and pragmatic — these are opportunities, not criticisms.
+
+## 8. Commit and push changes
 
 Commit all changes with a clear message summarizing the audit and any fixes applied, then push to the remote repository.
 
