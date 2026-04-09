@@ -1,0 +1,15 @@
+[submodule "raptor-chatbot"]
+	path = raptor-chatbot
+	url = https://github.com/g-orgo/Discord-bot.git
+
+[submodule "raptor-chatbot-llm"]
+	path = raptor-chatbot-llm
+	url = https://github.com/g-orgo/Discord-bot-LLM.git
+
+[submodule "raptor-chatbot-server"]
+	path = raptor-chatbot-server
+	url = https://github.com/g-orgo/Discord-bot-web-server.git
+
+[submodule "raptor-chatbot-web"]
+	path = raptor-chatbot-web
+	url = https://github.com/g-orgo/Discord-bot-web.git
