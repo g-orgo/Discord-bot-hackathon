@@ -2,9 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Structure
+## Project identification — folder prefix = project
 
-Mono-repo containing all Raptor projects.
+This mono-repo hosts **two completely separate projects**. The folder prefix identifies which project a folder belongs to:
+
+| Prefix | Project | Owner |
+|--------|---------|-------|
+| `raptor-*` | **Raptor Chatbot** | This repo's owner — actively developed here |
+| `signalraptor-*` | **SignalRaptor** | Third-party company — do NOT modify |
+
+> **Rule:** If a folder starts with `raptor-`, it belongs to Raptor Chatbot. If it starts with `signalraptor-`, it belongs to SignalRaptor and is out of scope for any work, audit, or context.
+
+---
+
+## Raptor Chatbot (`raptor-*`)
+
+The owner's project. All implementation work, audits, and context files are scoped here.
 
 | Folder | Stack | Description |
 |--------|-------|-------------|
@@ -12,22 +25,20 @@ Mono-repo containing all Raptor projects.
 | `raptor-chatbot-llm/` | Python, FastAPI, Ollama | LLM API server |
 | `raptor-chatbot-server/` | Node.js, Express, JWT | Auth server (login / register) |
 | `raptor-chatbot-web/` | React 19, Vite | Web frontend (chat, personality, auth) |
-| `raptor-services/` | Docker Compose | Shared infrastructure services |
-| `signalraptor-mobile/` | Quasar / Capacitor | Mobile app |
-| `signalraptor-server/` | AdonisJS | Backend API server |
-| `signalraptor-web/` | — | Web frontend |
-
-## Active projects
-
-The actively developed projects in this repo are:
-
-- **`raptor-chatbot/`** — Discord bot (HTTP interactions, Node.js/ESM)
-- **`raptor-chatbot-llm/`** — Dedicated LLM server for chatbot messages (Python, FastAPI, Ollama)
-- **`raptor-chatbot-server/`** — Auth server for the web frontend (Node.js/ESM, Express, JWT)
-- **`raptor-chatbot-web/`** — Web frontend for the chatbot (React 19, Vite)
-
-All implementation work, audits, and context files are scoped to these two projects. The other folders (`raptor-services/`, `signalraptor-*`) are separate projects — do not modify them unless explicitly asked.
-
-## Per-project guidance
 
 Each sub-project has its own `CLAUDE.md` with project-specific commands, architecture, and conventions. Always read the relevant `CLAUDE.md` before making changes inside a sub-project folder.
+
+---
+
+## SignalRaptor (`signalraptor-*`)
+
+A third-party company's project. These folders exist in this repo but are **not owned by the repo owner**.
+
+| Folder | Stack | Description |
+|--------|-------|-------------|
+| `signalraptor-mobile/` | Quasar / Capacitor | Mobile app |
+| `signalraptor-server/` | AdonisJS | Backend API server |
+| `signalraptor-services/` | Docker Compose | Shared infrastructure |
+| `signalraptor-web/` | — | Web frontend |
+
+**Do not read, edit, audit, or reference any `signalraptor-*` folder unless the user explicitly asks.**
