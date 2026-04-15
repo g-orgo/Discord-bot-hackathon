@@ -3,6 +3,8 @@ raptor-services/
 signalraptor-mobile/
 signalraptor-server/
 signalraptor-web/
-DEVLOG.md/
-DEVLOG-falado.md/
-articles-missing-investigation.md/
+DEVLOG.md
+DEVLOG-falado.md
+articles-missing-investigation.md
+signalraptor.code-workspace
+raptor-chatbot.code-workspace
