@@ -1,47 +1,51 @@
-# Começo
+# Beginning
 
-Decidi fazer um bot para o Discord que traduz ambientes multinacionais, pois vivemos um. A ideia de tornar isso minha entrada no Hackathon veio junto da implementação de gerar textos para brand em um cenário igualmente multinacional (como: comunicados, mensagens de publicidade), tornando a aplicação um catalisador de idiomas e ideias em ambos, um `Agentic Solution` e uma `Brand Tool`.
+I decided to build a Discord bot that translates for multinational environments, since we live in one. The idea of turning it into my Hackathon entry came together with implementing brand text generation for an equally multinational setting (things like announcements, advertising messages and others), making the app a catalyst for languages and ideas in both an `Agentic Solution` and a `Brand Tool`.
 
+## Early Stages
 
-## Estágios iniciais
+I started by setting up a Discord application, followed **[Discord’s own example](https://docs.discord.com/developers/quick-start/getting-started)** which made it super simple to move forward — didn’t waste much time here.
 
-Comecei fazendo uma aplicação do Discord, segui o **[exemplo do próprio Discord](https://docs.discord.com/developers/quick-start/getting-started)** que tornou super simples de prosseguir com isto, não perdi muito tempo aqui.
+## The LLM Idea
 
+Once the bot was running I started thinking about ways to handle the translation, and since I’d been working on other projects involving LLM development I decided to build one that would serve the translation process.
 
-## Ideia da LLM
+The idea was simple:
 
-Assim que estava com o bot operando pensei em meios que eu pudesse usar para traduzir, e como venho trabalhando em outros projetos que envolvem desenvolvimento com LLM optei por fazer uma que servisse para o processo de tradução.
+```
+Bot message –API→ LLM
+```
 
-A ideia era simples:
+## Early AI usage (Claude Code) and LLM improvements
 
-	Mensagem do bot –API→ LLM
+After that I started using the system Raptor pays for us to train scenarios with the LLM. That’s when I got the idea to add the text generation command, since the LLM was already working perfectly for translation.
 
-## Usos iniciais da inteligência artificial (Claude Code) e melhorias da LLM
+I also set up some behaviors to streamline my development workflow, like improvement report generation and testing capabilities for the system (including for Docker — where, for example, I spun up an image just to make sure my LLM model was behaving as expected).
 
-Após isso passei a usar o sistema que a Raptor paga para nós para treinar cenários com a LLM. Aí tive a ideia de adicionar o tal comando que gera textos já que tinha a LLM funcionando perfeitamente no âmbito da tradução.
+## Web Interface
 
-Também configurei alguns comportamentos para facilitar meu processo de desenvolvimento como geração de relatórios de melhoria e habilidades de testes para o sistema (incluindo para o Docker, onde, por exemplo, instanciei uma imagem apenas para garantir que o modelo da minha LLM está operando como deveria).
+I asked the agent to add a web interface using `React` because I wanted agencies that don’t use Discord to also be able to use the app as a `Brand Tool` — at this point it was no longer just a Discord bot but a full-on enterprise AI solution. I used ChatGPT’s and Claude’s interfaces as references, with a history system and an added option to choose the LLM’s personality (I built a login system for this just to stay within the Hackathon requirements).
 
-## Interface web
+## History
 
-Pedi ao agente que adicionasse uma interface web usando `React` pois gostaria que como `Brand Tool` agências que não possuíssem Discord pudessem também utilizar a aplicação, já que neste ponto não era mais um bot para Discord e sim uma solução de inteligência artificial empresarial. Peguei como exemplo as interfaces do chat GPT e do Claude Code com um sistema de histórico com um adicional de escolha para a personalidade da LLM (fiz um sistema de login para isto apenas para estar dentro dos requerimentos do Hackathon).
+For the bot’s history system I wanted the behavior to be:
 
-## Histórico
+```
+Discord bot
+		}→ Shared history
+Web interface
+```
 
-Para o sistema de histórico do bot queria que o comportamento fosse:
+But to do that I’d need some way to make calls from the Discord bot be identified as the same user X from the web app’s backend — so I asked the LLM what the most correct approach would be and it set up the scheme to work more like:
 
-	Discord bot
-			}→ Histórico em comum
-	Interface web
+```
+Discord bot
+	}Passes Discord user in header→ Shared history
+Web interface
+```
 
-Só que para isso eu teria que ter algum jeito de fazer com que o que fosse chamado no bot do Discord fosse identificado como do mesmo usuário X do backend da aplicação web, neste caso perguntei para a LLM qual seria o jeito mais correto de aplicar isto e ela fez com que o esquema funcionasse mais como:
+It also created a “profile” screen, and if the user had added their Discord username to their profile they would then be able to store history from both the Discord bot and the web app.
 
-	Discord bot
-		}Passa o usuário do Discord no header→ Histórico em comum
-	Interface web
+### SSE or Web Socket
 
-E também criou uma tela de "perfil" e caso o usuário tivesse adicionado ao perfil dele o usuário do Discord ele seria então capaz de armazenar histórico tanto do que ele do bot do Discord quanto da aplicação web.
-
-### SSE ou Web Socket
-
-Eu também gostaria que o histórico fosse atualizado automaticamente e como nunca tinha feito um sistema de web socket por mim mesmo (apenas consumido) eu pedi para o agente IA me orientar sobre isso, e então ele me sugeriu que eu usasse SSE, pois exigiria menos etapas para o mesmo resultado.
+I also wanted the history to update automatically, and since I’d never built a WebSocket system myself (only consumed one) I asked the AI agent to guide me through it — and it suggested SSE, since it would require fewer steps for the same result.
