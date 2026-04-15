@@ -4,10 +4,13 @@
 			"path": "signalraptor-web"
 		},
 		{
-			"path": "raptor-services"
+			"path": "signalraptor-server"
 		},
 		{
-			"path": "signalraptor-server"
+			"path": "signalraptor-services"
+		},
+		{
+			"path": "."
 		}
 	],
 	"settings": {}
