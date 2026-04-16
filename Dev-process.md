@@ -20,11 +20,11 @@ Bot message –API→ LLM
 
 After that I started using the system Raptor pays for us to train scenarios with the LLM. That’s when I got the idea to add the text generation command, since the LLM was already working perfectly for translation.
 
-I also set up some behaviors to streamline my development workflow, like improvement report generation and testing capabilities for the system (including for Docker — where, for example, I spun up an image just to make sure my LLM model was behaving as expected).
+I also set up some behaviors to streamline my development workflow, like improvement report generation and testing capabilities for the system (including for Docker — where, for example, I setup an image just to make sure my LLM model was behaving as expected).
 
 ## Web Interface
 
-I asked the agent to add a web interface using `React` because I wanted agencies that don’t use Discord to also be able to use the app as a `Brand Tool` — at this point it was no longer just a Discord bot but a full-on enterprise AI solution. I used ChatGPT’s and Claude’s interfaces as references, with a history system and an added option to choose the LLM’s personality (I built a login system for this just to stay within the Hackathon requirements).
+I asked the agent to add a web interface using `React` because I wanted agencies that don’t use Discord to also be able to use the app as a `Brand Tool` — at this point it was no longer just a Discord bot but a full-on enterprise AI solution for communication across multilanguage teams. I used ChatGPT’s and Claude’s interfaces as references, with a history system and an added option to choose the LLM’s personality (I built a login system for this just to stay within the Hackathon requirements).
 
 ## History
 
@@ -45,6 +45,8 @@ Web interface
 ```
 
 It also created a “profile” screen, and if the user had added their Discord username to their profile they would then be able to store history from both the Discord bot and the web app.
+
+Other issue i had with the history module is that data wasn't being persistent throughout sessions.
 
 ### SSE or Web Socket
 
