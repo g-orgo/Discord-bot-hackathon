@@ -8,6 +8,7 @@ services:
     volumes:
       - ollama_models:/root/.ollama
     restart: unless-stopped
+    restart: no
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
@@ -47,7 +48,7 @@ services:
         condition: service_healthy
       ollama-init:
         condition: service_completed_successfully
-    restart: unless-stopped
+    restart: no
 
   auth-server:
     build: ./raptor-chatbot-server
@@ -62,7 +63,7 @@ services:
       - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET:-raptor-bot-secret-change-in-prod}
     volumes:
       - auth_data:/app/data
-    restart: unless-stopped
+    restart: no
 
   web:
     build: ./raptor-chatbot-web
@@ -88,7 +89,7 @@ services:
     depends_on:
       - llm
       - auth-server
-    restart: unless-stopped
+    restart: no
 
   ngrok:
     image: ngrok/ngrok:latest
@@ -99,7 +100,7 @@ services:
       - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
     depends_on:
       - bot
-    restart: unless-stopped
+    restart: no
 
 volumes:
   ollama_models:
