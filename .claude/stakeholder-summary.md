@@ -1,93 +1,46 @@
-# 🦖 Raptor — Project Health Summary
+﻿# Raptor Platform Snapshot
 
-**Date:** April 7, 2026
+## What this product is 🚀
+Raptor is a multi-app AI communication platform that helps people rewrite, translate, and manage conversations across Discord and the web.
 
----
+It is organized as a mono-repo with four active Raptor services:
+- `raptor-chatbot`: Discord bot experience
+- `raptor-chatbot-llm`: AI inference gateway powered by local Ollama
+- `raptor-chatbot-server`: account, auth, and history backend
+- `raptor-chatbot-web`: browser UI for chat, profile, and personality controls
 
-## What is Raptor?
+## What users can do today ✅
+- Chat with the assistant from Discord slash commands and from a web app.
+- Rewrite content into professional English tone.
+- Stream AI responses in real time for faster feedback.
+- Create an account and keep chat history tied to their profile.
+- Link Discord username to bring bot conversations into web history.
+- Update the active AI system prompt from the web personality area.
 
-Raptor is a suite of connected tools that help people communicate better — powered by AI. It has two main interfaces: a **Discord bot** and a **web app**, both backed by the same AI engine.
+## Why it matters 💡
+- It centralizes communication improvement workflows in one product.
+- It supports both community-first usage (Discord) and personal workflows (web app).
+- It combines AI assistance with identity, history, and continuity across channels.
 
----
+## Service-by-service overview 🧩
 
-## 🤖 raptor-chatbot — Discord Bot
+### Discord Bot (`raptor-chatbot`) 🤖
+Receives Discord interactions over HTTP, handles slash commands, and sends requests to the LLM service. It can also send Discord-originated history records to the auth server.
 
-The Discord bot lets users interact with the AI directly from any Discord server or DM. It has three slash commands:
+### LLM Service (`raptor-chatbot-llm`) 🧠
+FastAPI service that wraps a local Ollama model and exposes chat/generate/stream endpoints. It also supports runtime system prompt management.
 
-- **`/ask`** — Send a message to the AI and get a rewritten, more empathetic version back
-- **`/translatechannel`** — Automatically detects and translates all non-English messages in a channel
-- **`/clearchannel`** — Debug tool to wipe all messages from a channel
+### Auth + History Server (`raptor-chatbot-server`) 🔐
+Manages registration, login, JWT authentication, profile updates, and persistent history storage. Also exposes bot-secured endpoints for Discord history ingestion.
 
-History: The bot started out with a Rock-Paper-Scissors game (`/challenge`), which has since been fully removed to keep things clean and focused on the communication tools.
+### Web Frontend (`raptor-chatbot-web`) 🎨
+React SPA where users chat, authenticate, view history, and manage prompt/personality behavior. Uses responsive navigation for desktop and mobile.
 
-**Current state:** ✅ Healthy — clean codebase, no dead code, all commands working correctly.
+## Current maturity 🏁
+- Core end-to-end flow is operational: user input -> AI response -> optional history persistence.
+- Real-time updates are supported through streaming and server-sent events.
+- Security baseline is in place with JWT, bot secret headers, and input validation.
+- The architecture supports iterative improvements without major rewrites.
 
----
-
-## 🧠 raptor-chatbot-llm — AI Engine
-
-The brain of the operation. A Python API server that wraps a locally-running Ollama AI model (`llama3.2:3b`). It takes messages, applies a personality prompt, and returns a rewritten version.
-
-Recent additions:
-- **Streaming responses** — the AI now types its answer in real-time instead of waiting for the full response
-- **Startup model check** — the server now automatically downloads the AI model if it's missing, preventing silent failures
-
-**Current state:** ✅ Healthy — stable, well-structured, handles errors gracefully.
-
----
-
-## 🔐 raptor-chatbot-server — Auth & History Server
-
-Handles user accounts, login, and conversation history. Backed by MongoDB for persistent storage.
-
-Features:
-- Register/login with email and password
-- JWT-based authentication (tokens expire after 7 days)
-- Full conversation history per user
-- **Real-time sidebar** — when a new conversation is saved (from the web OR Discord), the browser sidebar updates instantly via a live connection (SSE)
-- **Discord linking** — users can connect their Discord username to their web account so bot conversations appear in the web history
-
-**Current state:** ✅ Healthy — persistent storage, secure passwords, rate limiting on login attempts.
-
----
-
-## 🌐 raptor-chatbot-web — Web App
-
-The web frontend. A clean, responsive React app that lets users:
-
-- Chat with the AI in real-time (with token-by-token streaming)
-- Switch between AI "personalities" (Empathetic, Professional, Casual, Concise, Creative, or Custom)
-- Browse and restore conversation history
-- Link their Discord account in the profile page
-
-**Current state:** ✅ Healthy — all API calls use the proxy correctly, session is properly ephemeral, route guards in place.
-
----
-
-## 🐳 raptor-services — Infrastructure
-
-Docker Compose setup that wires everything together. All service ports are now configurable via environment variables (e.g. if port 8000 is already in use, just set `LLM_PORT=8001` in `.env`).
-
----
-
-## 📱 signalraptor — Mobile & Server
-
-Separate project — mobile app (`Quasar/Capacitor`) with its own backend (`AdonisJS`). Not part of the active development cycle.
-
----
-
-## 🧹 What Was Cleaned Up Recently
-
-- Removed the `/challenge` RPS game completely (code, docs, context files)
-- Removed `logChannelMessages` dead code
-- Fixed all documentation that still described the auth server as "in-memory" (it's been MongoDB for a while)
-- Updated all AI context files to reflect the current split-file architecture of the LLM server
-- Added streaming support to the web chat interface
-- Added automatic Ollama model pull on startup (prevents "no messages found" silent failure)
-- All port conflicts in Docker are now resolvable via `.env` — no need to edit compose files
-
----
-
-## 🟢 Overall Health: Strong
-
-The codebase is clean, well-structured, and following consistent patterns across all four services. Security fundamentals (passwords hashed, JWT, rate limiting, input validation) are solid throughout.
+## Mono-repo scope note 📦
+The repository also contains non-Raptor folders (`signalraptor-*`) owned externally and intentionally out of the current product development scope.
