@@ -7,7 +7,6 @@ services:
       - "${OLLAMA_PORT:-11434}:11434"
     volumes:
       - ollama_models:/root/.ollama
-    restart: unless-stopped
     restart: no
     healthcheck:
       test: ["CMD", "ollama", "list"]

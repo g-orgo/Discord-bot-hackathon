@@ -5,8 +5,9 @@ signalraptor-server/
 signalraptor-web/
 raptor-chatbot-llm/
 raptor-chatbot-server/
-DEVLOG.md
-DEVLOG-falado.md
+DEVLOG-feito-por-mim.md
+DEVLOG-gerado-por-ia.md
+PASSO_A_PASSO_ESTADO_ATUAL.md
 articles-missing-investigation.md
 signalraptor.code-workspace
 raptor-chatbot.code-workspace
