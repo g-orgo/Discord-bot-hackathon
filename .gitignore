@@ -3,8 +3,8 @@ raptor-services/
 signalraptor-mobile/
 signalraptor-server/
 signalraptor-web/
-raptor-chatbot-llm
-raptor-chatbot-server
+raptor-chatbot-llm/
+raptor-chatbot-server/
 DEVLOG.md
 DEVLOG-falado.md
 articles-missing-investigation.md
