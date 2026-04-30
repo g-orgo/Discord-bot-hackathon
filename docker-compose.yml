@@ -41,6 +41,7 @@ services:
       - "${LLM_PORT:-8000}:8000"
     environment:
       - OLLAMA_URL=http://ollama:11434/api/generate
+      - OLLAMA_CHAT_URL=http://ollama:11434/api/chat
       - CORS_ORIGIN=http://localhost
     depends_on:
       ollama:
