@@ -27,6 +27,8 @@ Browser
                               └── MongoDB
 ```
 
+For Discord `/message`, the bot now drives a staged single-message workflow: it keeps editing the same interaction response while the LLM moves through linkedinfy, context gate, translation, and optionally the extra-suggestion stages. That keeps the UX cleaner and avoids paying the full compute cost for alternative suggestions unless the user explicitly asks for them.
+
 ## Quick start
 
 Clone all sub-projects and run each service:
@@ -57,3 +59,9 @@ yarn dev
 ## Environment variables
 
 Each sub-project has its own `.env`. See the individual READMEs for the full list of required variables.
+
+## Presentation and Technical Prep
+
+- `HACKATHON-PRESENTATION.md` - full technical presentation script with architecture, trade-offs, and demo flow.
+- `TECHNICAL-QA.md` - rapid-fire technical Q&A cheat sheet for interview/panel questions.
+- `hackathon-presentation-guide.md` - concise checklist for presentation structure and pre-flight validation.
