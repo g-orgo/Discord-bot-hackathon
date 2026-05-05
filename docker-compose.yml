@@ -5,9 +5,20 @@ services:
     image: ollama/ollama:latest
     ports:
       - "${OLLAMA_PORT:-11434}:11434"
+    environment:
+      - OLLAMA_NUM_PARALLEL=${OLLAMA_NUM_PARALLEL:-1}
+      - OLLAMA_MAX_LOADED_MODELS=${OLLAMA_MAX_LOADED_MODELS:-1}
     volumes:
       - ollama_models:/root/.ollama
+    mem_limit: ${OLLAMA_MEM_LIMIT:-8G}
+    mem_reservation: ${OLLAMA_MEM_RESERVATION:-4G}
     restart: no
+    deploy:
+      resources:
+        limits:
+          memory: ${OLLAMA_MEM_LIMIT:-8G}
+        reservations:
+          memory: ${OLLAMA_MEM_RESERVATION:-4G}
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
@@ -21,15 +32,17 @@ services:
       - "/bin/sh"
       - "-c"
       - |
-        echo "Checking if model llama3.2:3b is already installed..."
-        if ollama list | grep -q "llama3.2:3b"; then
-          echo "Model llama3.2:3b is already installed. Skipping pull."
+        MODEL=$${DEFAULT_MODEL:-qwen2.5:1.5b}
+        echo "Checking if model $${MODEL} is already installed..."
+        if ollama list | grep -q "$${MODEL}"; then
+          echo "Model $${MODEL} is already installed. Skipping pull."
         else
-          echo "Model llama3.2:3b not found. Pulling..."
-          ollama pull llama3.2:3b
+          echo "Model $${MODEL} not found. Pulling..."
+          ollama pull $${MODEL}
         fi
     environment:
       - OLLAMA_HOST=http://ollama:11434
+      - DEFAULT_MODEL=${DEFAULT_MODEL:-qwen2.5:1.5b}
     depends_on:
       ollama:
         condition: service_healthy
@@ -43,11 +56,32 @@ services:
       - OLLAMA_URL=http://ollama:11434/api/generate
       - OLLAMA_CHAT_URL=http://ollama:11434/api/chat
       - CORS_ORIGIN=http://localhost
+      - DEFAULT_MODEL=${DEFAULT_MODEL:-qwen2.5:1.5b}
+      - NUM_CTX=${NUM_CTX:-768}
+      - NUM_PREDICT=${NUM_PREDICT:-64}
+      - OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-45s}
+      - OLLAMA_LOW_VRAM=${OLLAMA_LOW_VRAM:-true}
+      - TRANSLATE_EXAMPLES_LIMIT=${TRANSLATE_EXAMPLES_LIMIT:-1}
+      - CHAT_ENABLE_CONTEXT_GATE=${CHAT_ENABLE_CONTEXT_GATE:-false}
     depends_on:
       ollama:
         condition: service_healthy
       ollama-init:
         condition: service_completed_successfully
+    mem_limit: ${LLM_MEM_LIMIT:-1G}
+    mem_reservation: ${LLM_MEM_RESERVATION:-768M}
+    deploy:
+      resources:
+        limits:
+          memory: ${LLM_MEM_LIMIT:-1G}
+        reservations:
+          memory: ${LLM_MEM_RESERVATION:-768M}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 300s
     restart: no
 
   auth-server:
@@ -60,9 +94,16 @@ services:
       - ADMIN_EMAIL=${ADMIN_EMAIL:-}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
       - MONGOMS_DOWNLOAD_DIR=/app/.mongodb-binaries
+      - MONGOMS_STARTUP_TIMEOUT=30000
       - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET:-raptor-bot-secret-change-in-prod}
     volumes:
       - auth_data:/app/data
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
     restart: no
 
   web:
@@ -72,6 +113,12 @@ services:
     depends_on:
       - llm
       - auth-server
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
     restart: unless-stopped
 
   bot:
@@ -87,8 +134,16 @@ services:
       - AUTH_URL=http://auth-server:3001
       - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET:-raptor-bot-secret-change-in-prod}
     depends_on:
-      - llm
-      - auth-server
+      llm:
+        condition: service_healthy
+      auth-server:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
     restart: no
 
   ngrok:

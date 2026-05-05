@@ -42,3 +42,9 @@ A third-party company's project. These folders exist in this repo but are **not 
 | `signalraptor-web/` | — | Web frontend |
 
 **Do not read, edit, audit, or reference any `signalraptor-*` folder unless the user explicitly asks.**
+
+---
+
+## PT-BR filler map (agent parsing)
+
+- "talvez até" (hedge/filler) -> (drop)
